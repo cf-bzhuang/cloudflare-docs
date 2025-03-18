@@ -1,6 +1,7 @@
 ---
 productName: D1
 entries:
+
   - term: primary database instance
     general_definition: |-
       the primary database instance is the original instance of a database. This database instance only exists in one location in the world.
@@ -12,3 +13,7 @@ entries:
   - term: read replica
     general_definition: |-
       a read replica is an “almost up-to-date” copy of the primary database instance which only serve read requests. There may be multiple read replicas for a single primary database instance.
+
+  - term: "query planner"
+    general_definition: |-
+      A component in a database management system which takes a user query and generates the most efficient plan of executing that query (the query plan). For example, the query planner decides which indices to use, or which table to access first.
