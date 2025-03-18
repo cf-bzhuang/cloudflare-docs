@@ -156,9 +156,6 @@ export default {
 					600: "var(--tw-accent-600)",
 					900: "var(--tw-accent-900)",
 				},
-				sl: {
-					DEFAULT: "var(--sl-color-text)",
-				},
 				gray,
 				cl1,
 			},

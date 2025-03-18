@@ -6,6 +6,8 @@ sidebar:
 head:
   - tag: title
     content: Common HTTP policies
+banner:
+  content: The default global Cloudflare root certificate will expire on 2025-02-02. If you installed the default Cloudflare certificate before 2024-10-17, you must <a href="/cloudflare-one/connections/connect-devices/user-side-certificates/#generate-a-cloudflare-root-certificate">generate a new certificate</a> and activate it for your Zero Trust organization to avoid inspection errors.
 ---
 
 import { Render, Tabs, TabItem } from "~/components";
@@ -33,9 +35,9 @@ Block all subdomains that use a host.
 <TabItem label="API">
 
 ```bash
-curl https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/gateway/rule \
+curl https://api.cloudflare.com/client/v4/accounts/{account_id}/gateway/rule \
 --header "Content-Type: application/json" \
---header "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+--header "Authorization: Bearer <API_TOKEN>" \
 --data '{
   "name": "Block sites by hostname",
   "description": "Block all subdomains that use a specific hostname",
@@ -67,9 +69,9 @@ Block a section of a site without blocking the entire site. For example, you can
 <TabItem label="API">
 
 ```bash
-curl https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/gateway/rule \
+curl https://api.cloudflare.com/client/v4/accounts/{account_id}/gateway/rule \
 --header "Content-Type: application/json" \
---header "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+--header "Authorization: Bearer <API_TOKEN>" \
 --data '{
   "name": "Block sites by URL",
   "description": "Block specific parts of a site without blocking the hostname",
@@ -90,19 +92,69 @@ curl https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/gateway/rule \
 
 Block content categories which go against your organization's acceptable use policy.
 
-<Render
-	file="gateway/policies/dash-plus-api/http/block-content-categories"
-	product="cloudflare-one"
-/>
+<Tabs syncKey="dashPlusAPI"> <TabItem label="Dashboard">
+
+| Selector           | Operator | Value                      | Action |
+| ------------------ | -------- | -------------------------- | ------ |
+| Content Categories | in       | _Adult Themes_, _Gambling_ | Block  |
+
+</TabItem>
+
+<TabItem label="API">
+
+```bash
+curl https://api.cloudflare.com/client/v4/accounts/{account_id}/gateway/rule \
+--header "Content-Type: application/json" \
+--header "Authorization: Bearer <API_TOKEN>" \
+--data '{
+  "name": "Block content categories",
+  "description": "Block access to unauthorized adult and gambling applications",
+  "enabled": true,
+  "action": "block",
+  "filters": [
+    "http"
+  ],
+  "traffic": "any(http.request.uri.content_category[*] in {2 67 125 133 99})",
+  "identity": "",
+  "device_posture": ""
+}'
+```
+
+</TabItem> </Tabs>
 
 ## Block unauthorized applications
 
 <Render file="gateway/policies/block-applications" product="cloudflare-one" />
 
-<Render
-	file="gateway/policies/dash-plus-api/http/block-applications"
-	product="cloudflare-one"
-/>
+<Tabs syncKey="dashPlusAPI"> <TabItem label="Dashboard">
+
+| Selector    | Operator | Value                     | Action |
+| ----------- | -------- | ------------------------- | ------ |
+| Application | in       | _Artificial Intelligence_ | Block  |
+
+</TabItem>
+
+<TabItem label="API">
+
+```bash
+curl https://api.cloudflare.com/client/v4/accounts/{account_id}/gateway/rule \
+--header "Content-Type: application/json" \
+--header "Authorization: Bearer <API_TOKEN>" \
+--data '{
+  "name": "Block unauthorized applications",
+  "description": "Block access to unauthorized AI applications",
+  "enabled": true,
+  "action": "block",
+  "filters": [
+    "http"
+  ],
+  "traffic": "any(app.type.ids[*] in {25})",
+  "identity": "",
+  "device_posture": ""
+}'
+```
+
+</TabItem> </Tabs>
 
 ## Check user identity
 
@@ -120,9 +172,9 @@ Block content categories which go against your organization's acceptable use pol
 <TabItem label="API">
 
 ```bash
-curl https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/gateway/rule \
+curl https://api.cloudflare.com/client/v4/accounts/{account_id}/gateway/rule \
 --header "Content-Type: application/json" \
---header "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+--header "Authorization: Bearer <API_TOKEN>" \
 --data '{
   "name": "Check user identity",
   "description": "Block access to Salesforce by temporary employees and contractors",
@@ -156,9 +208,9 @@ Gateway [evaluates Do Not Inspect policies first](/cloudflare-one/policies/gatew
 <TabItem label="API">
 
 ```bash
-curl https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/gateway/rule \
+curl https://api.cloudflare.com/client/v4/accounts/{account_id}/gateway/rule \
 --header "Content-Type: application/json" \
---header "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+--header "Authorization: Bearer <API_TOKEN>" \
 --data '{
   "name": "Bypass incompatible applications",
   "description": "Skip TLS decryption for applications that are incompatible with Gateway",
@@ -198,9 +250,9 @@ Perform an [OS version check](/cloudflare-one/identity/devices/warp-client-check
 <TabItem label="API">
 
 ```bash
-curl https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/gateway/rule \
+curl https://api.cloudflare.com/client/v4/accounts/{account_id}/gateway/rule \
 --header "Content-Type: application/json" \
---header "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+--header "Authorization: Bearer <API_TOKEN>" \
 --data '{
   "name": "Require OS version",
   "description": "Perform an OS version check for minimum version",
@@ -237,9 +289,9 @@ Since the file path will be different for each operating system, you can configu
 <TabItem label="API">
 
 ```bash
-curl https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/gateway/rule \
+curl https://api.cloudflare.com/client/v4/accounts/{account_id}/gateway/rule \
 --header "Content-Type: application/json" \
---header "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+--header "Authorization: Bearer <API_TOKEN>" \
 --data '{
   "name": "Check for specific file",
   "description": "Ensure users have a specific file on their device regardless of operating system",
@@ -281,9 +333,9 @@ When accessing origin servers with certificates not signed by a public certifica
 <TabItem label="API">
 
 ```bash
-curl https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/gateway/rule \
+curl https://api.cloudflare.com/client/v4/accounts/{account_id}/gateway/rule \
 --header "Content-Type: application/json" \
---header "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+--header "Authorization: Bearer <API_TOKEN>" \
 --data '{
   "name": "Bypass internal site inspection",
   "description": "Bypass TLS decryption for internal sites with self-signed certificates",
@@ -308,7 +360,7 @@ For more information on supported file types, refer to [Download and Upload File
 
 ## Block Google services
 
-To enable Gateway inspection for Google Drive traffic, you must [add a Cloudflare certificate to Google Drive](/cloudflare-one/connections/connect-devices/user-side-certificates/manual-deployment/#google-drive).
+To enable Gateway inspection for Google Drive traffic, you must [add a Cloudflare certificate to Google Drive](/cloudflare-one/connections/connect-devices/user-side-certificates/manual-deployment/#google-drive-for-desktop).
 
 ### Block Google Drive downloads
 
@@ -326,9 +378,9 @@ Block file downloads from Google Drive.
 <TabItem label="API">
 
 ```bash
-curl https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/gateway/rule \
+curl https://api.cloudflare.com/client/v4/accounts/{account_id}/gateway/rule \
 --header "Content-Type: application/json" \
---header "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+--header "Authorization: Bearer <API_TOKEN>" \
 --data '{
   "name": "Block Google Drive downloads",
   "description": "Block file downloads from Google Drive",
@@ -338,42 +390,6 @@ curl https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/gateway/rule \
     "http"
   ],
   "traffic": "any(app.ids[*] in {554}) and http.request.uri.path_and_query matches \".*(e=download\\|export).*\"",
-  "identity": "",
-  "device_posture": ""
-}'
-```
-
-</TabItem> </Tabs>
-
-### Block Google Drive uploads
-
-Block file uploads from Google Drive.
-
-<Tabs syncKey="dashPlusAPI"> <TabItem label="Dashboard">
-
-| Selector         | Operator      | Value                                  | Logic | Action |
-| ---------------- | ------------- | -------------------------------------- | ----- | ------ |
-| Application      | in            | _Google Drive_                         | And   | Block  |
-| Upload Mime Type | matches regex | `.*`                                   | And   |        |
-| Host             | is not        | `drivefrontend-pa.clients6.google.com` |       |        |
-
-</TabItem>
-
-<TabItem label="API">
-
-```bash
-curl https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/gateway/rule \
---header "Content-Type: application/json" \
---header "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
---data '{
-  "name": "Block Google Drive uploads",
-  "description": "Block file uploads to Google Drive",
-  "enabled": true,
-  "action": "block",
-  "filters": [
-    "http"
-  ],
-  "traffic": "any(app.ids[*] in {554}) and http.upload.mime matches \".*\" and not(http.request.host == \"drivefrontend-pa.clients6.google.com\")",
   "identity": "",
   "device_posture": ""
 }'
@@ -397,9 +413,9 @@ Block file downloads from Gmail.
 <TabItem label="API">
 
 ```bash
-curl https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/gateway/rule \
+curl https://api.cloudflare.com/client/v4/accounts/{account_id}/gateway/rule \
 --header "Content-Type: application/json" \
---header "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+--header "Authorization: Bearer <API_TOKEN>" \
 --data '{
   "name": "Block Gmail downloads",
   "description": "Block file downloads from Gmail",

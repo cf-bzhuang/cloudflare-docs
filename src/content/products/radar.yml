@@ -13,3 +13,7 @@ meta:
 
 resources:
   community: https://community.cloudflare.com/tag/cloudflareradar
+
+externals:
+  - title: Cloudflare Radar homepage
+    url: https://radar.cloudflare.com

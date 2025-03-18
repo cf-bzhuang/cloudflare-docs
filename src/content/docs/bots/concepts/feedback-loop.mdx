@@ -50,7 +50,7 @@ If Cloudflare is unable to detect a portion of automated traffic on your site, s
 
 ### Create a feedback report
 
-```sh
+```bash
 curl 'https://api.cloudflare.com/client/v4/zones/{zone_id}/bot_management/feedback' \
 --header "X-Auth-Email: <EMAIL>" \
 --header "X-Auth-Key: <API_KEY>" \
@@ -87,6 +87,11 @@ curl 'https://api.cloudflare.com/client/v4/zones/{zone_id}/bot_management/feedba
 }'
 ```
 
+```json
+# Output
+Null
+```
+
 ### List feedback reports
 
 ```bash
@@ -95,7 +100,8 @@ curl 'https://api.cloudflare.com/client/v4/zones/{zone_id}/bot_management/feedba
 --header "X-Auth-Key: <API_KEY>"
 ```
 
-```bash output
+```json
+// Output
 [
   {
     "created_at": "2022-08-19T00:05:24.749712Z",

@@ -1,4 +1,4 @@
-import { useEffect, useState, type ChangeEvent } from "react";
+import { useState } from "react";
 import FieldBadges from "./fields/FieldBadges";
 import Markdown from "react-markdown";
 import type { CollectionEntry } from "astro:content";
@@ -25,7 +25,7 @@ const FieldCatalog = ({ fields }: { fields: Fields }) => {
 	const categories = [
 		...new Set(
 			fields
-				.map((field) => field.categories ?? [])
+				.map((field) => field.categories)
 				.flat()
 				.sort(),
 		),
@@ -57,21 +57,6 @@ const FieldCatalog = ({ fields }: { fields: Fields }) => {
 		return true;
 	});
 
-	useEffect(() => {
-		// On component load, check for deep-links to categories in the query param
-		const params = new URLSearchParams(window.location.search);
-		const categories = params.getAll("field-category");
-		const searchTerm = params.get("search-term") ?? "";
-
-		if (!categories && !searchTerm) return;
-
-		setFilters({
-			...filters,
-			search: searchTerm,
-			categories: categories,
-		});
-	}, []);
-
 	return (
 		<div className="md:flex">
 			<div className="mr-8 w-full md:w-1/4">
@@ -94,18 +79,19 @@ const FieldCatalog = ({ fields }: { fields: Fields }) => {
 								type="checkbox"
 								className="mr-2"
 								value={category}
-								checked={filters.categories.includes(category)}
-								onChange={(e: ChangeEvent<HTMLInputElement>) => {
-									if (e.target.checked) {
+								onClick={(e) => {
+									const target = e.target as HTMLInputElement;
+
+									if (target.checked) {
 										setFilters({
 											...filters,
-											categories: [...filters.categories, e.target.value],
+											categories: [...filters.categories, target.value],
 										});
 									} else {
 										setFilters({
 											...filters,
 											categories: filters.categories.filter(
-												(f) => f !== e.target.value,
+												(f) => f !== target.value,
 											),
 										});
 									}
@@ -136,17 +122,20 @@ const FieldCatalog = ({ fields }: { fields: Fields }) => {
 						>
 							<div className="-mb-1 flex items-center">
 								<span
-									className="overflow-hidden text-ellipsis whitespace-nowrap text-lg font-semibold"
+									className="font-semibold text-lg text-ellipsis overflow-hidden whitespace-nowrap"
 									title={`${field.name}: ${field.data_type}`}
 								>
 									{field.name}
 								</span>
 							</div>
-							<div className="!mt-2 line-clamp-2 text-sm leading-6">
-								<Markdown disallowedElements={["a"]} unwrapDisallowed={true}>
-									{field.summary}
-								</Markdown>
-							</div>
+							<Markdown
+								className="!mt-2 line-clamp-2 text-sm leading-6"
+								disallowedElements={["a"]}
+								unwrapDisallowed={true}
+							>
+								{field.summary}
+							</Markdown>
+
 							{field.plan_info_label && (
 								<div className="!mt-2 text-xs">
 									<FieldBadges badges={[field.plan_info_label]} />

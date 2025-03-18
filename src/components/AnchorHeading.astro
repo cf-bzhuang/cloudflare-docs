@@ -3,7 +3,7 @@ import { z } from "astro:schema";
 import { marked } from "marked";
 import { slug as GithubSlug } from "github-slugger";
 
-import { process } from "~/util/rehype";
+import { rehype } from "rehype";
 import rehypeAutoLinkHeadings from "~/plugins/rehype/autolink-headings";
 
 type Props = z.infer<typeof props>;
@@ -20,10 +20,11 @@ const slugified = GithubSlug(slug ?? title);
 
 const tag = `h${depth}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
-const html = await process(
-	`<${tag} id=${slugified}>${marked.parseInline(title)}</${tag}>`,
-	[rehypeAutoLinkHeadings],
-);
+const file = await rehype()
+	.use(rehypeAutoLinkHeadings)
+	.process(`<${tag} id=${slugified}>${marked.parseInline(title)}</${tag}>`);
+
+const html = file.toString();
 ---
 
 <Fragment set:html={html} />

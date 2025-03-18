@@ -1,12 +1,11 @@
 ---
 import { z } from "astro:schema";
 import { marked } from "marked";
-import dedent from "dedent";
 
 type Props = z.infer<typeof props>;
 
 const props = z.object({
-	text: z.string().transform((val) => dedent(val)),
+	text: z.string(),
 	inline: z.boolean().default(true),
 });
 

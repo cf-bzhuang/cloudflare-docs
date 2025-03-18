@@ -1,10 +1,13 @@
 ---
+import type { Props } from "@astrojs/starlight/props";
 import Default from "@astrojs/starlight/components/Page.astro";
 
 import { generateDescription, generateTableOfContents } from "~/util/props";
-import { getSidebar, flattenSidebar } from "~/util/sidebar";
+import { getSidebar, flattenSidebar, type SidebarEntry } from "~/util/sidebar";
 
-const props = Astro.locals.starlightRoute;
+type Group = Extract<Props["sidebar"][0], { type: "group" }>;
+
+const props = Astro.props;
 const data = props.entry.data;
 
 const html = await Astro.slots.render("default");
@@ -14,11 +17,12 @@ if (props.toc) {
 }
 
 if (props.hasSidebar) {
-	const group = await getSidebar(Astro);
-	props.sidebar = group.entries;
+	(props.sidebar as unknown as Group) = await getSidebar(Astro);
 
 	if (props.pagination) {
-		const flattened = flattenSidebar(props.sidebar);
+		const flattened = flattenSidebar(
+			props.sidebar.entries as unknown as SidebarEntry[],
+		);
 
 		const idx = flattened.findIndex((entry) => entry.isCurrent);
 
@@ -57,10 +61,4 @@ if (data.updated) {
 }
 ---
 
-<Default set:html={html} />
-
-<style>
-	html:not([data-has-toc]) {
-		--sl-content-width: 67.5rem;
-	}
-</style>
+<Default {...Astro.props} set:html={html} />

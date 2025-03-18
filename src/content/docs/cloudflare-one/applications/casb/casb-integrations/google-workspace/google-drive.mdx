@@ -10,7 +10,7 @@ import { Render } from "~/components";
 
 <Render
   file="casb/integration-description"
-  params={{ integrationName: "Google Drive", integrationAccountType: "Google Workspace account" }}
+  params={{ one: "Google Drive", two: "Google Workspace account" }}
 />
 
 ## Integration prerequisites
@@ -21,14 +21,14 @@ import { Render } from "~/components";
 
 <Render
   file="casb/integration-perms"
-  params={{ parentIntegration: "Google Workspace", parentSlug: "google-workspace" }}
+  params={{ one: "Google Workspace", two: "google-workspace" }}
 />
 
 ## Security findings
 
 <Render
   file="casb/security-findings"
-  params={{ integrationName: "Google Drive", slugRelativePath: "google-workspace/google-drive" }}
+  params={{ one: "Google Drive", two: "google-workspace/google-drive" }}
 />
 
 ### File sharing

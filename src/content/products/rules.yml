@@ -16,3 +16,7 @@ meta:
 resources:
   community: https://community.cloudflare.com/c/general/rules/66
   dashboard_link: https://dash.cloudflare.com/?to=/:account/:zone/rules
+
+externals:
+  - title: Cloudflare homepage
+    url: https://cloudflare.com

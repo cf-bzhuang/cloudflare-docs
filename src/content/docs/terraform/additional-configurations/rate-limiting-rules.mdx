@@ -1,17 +1,18 @@
 ---
-title: Rate limiting rules configuration using Terraform
+title: Rate limiting rules
 pcx_content_type: how-to
 sidebar:
   order: 4
-  label: Rate limiting rules
 head:
   - tag: title
-    content: Rate limiting rules configuration using Terraform
+    content: Configure rate limiting rules with Terraform
 ---
 
 import { Details, Render } from "~/components";
 
-This page provides examples of creating [rate limiting rules](/waf/rate-limiting-rules/) in a zone or account using Terraform.
+This page provides an example of creating a rate limiting rule in a zone using Terraform.
+
+For more information on rate limiting rules, refer to [Rate limiting rules](/waf/rate-limiting-rules/) in the Cloudflare WAF documentation.
 
 :::note
 
@@ -30,7 +31,7 @@ For more information on configuring the previous version of rate limiting rules 
 
 ---
 
-## Create a rate limiting rule at the zone level
+## Create a rate limiting rule
 
 This example creates a rate limiting rule in zone with ID `<ZONE_ID>` blocking traffic that exceeds the configured rate:
 
@@ -61,15 +62,14 @@ resource "cloudflare_ruleset" "zone_rl" {
 
 <Render file="add-new-rule" params={{ one: "rate limiting rule" }} /> <br />
 
-## Create a rate limiting rule at the account level
+<Details header="Account-level example configuration">
 
-:::note[Notes]
+:::note[Before you start]
 
-- [Account-level rate limiting configuration](/waf/account/) requires an Enterprise plan with a paid add-on.
+- Account-level rate limiting configuration requires an Enterprise plan with a paid add-on.
 
 - Custom rulesets deployed at the account level will only apply to incoming traffic of zones on an Enterprise plan. The expression of your `execute` rule must end with `and cf.zone.plan eq "ENT"`.
-
-:::
+  :::
 
 This example defines a [custom ruleset](/ruleset-engine/custom-rulesets/) with a single rate limiting rule in account with ID `<ACCOUNT_ID>` that blocks traffic for the `/api/` path exceeding the configured rate. The second `cloudflare_ruleset` resource defines an `execute` rule that deploys the custom ruleset for traffic addressed at `example.com`.
 
@@ -77,7 +77,7 @@ This example defines a [custom ruleset](/ruleset-engine/custom-rulesets/) with a
 
 ```tf
 resource "cloudflare_ruleset" "account_rl" {
-  account_id  = "<ACCOUNT_ID>"
+  account_id  = <ACCOUNT_ID>
   name        = "Rate limiting rules for APIs"
   description = ""
   kind        = "custom"
@@ -120,7 +120,7 @@ resource "cloudflare_ruleset" "account_rl_entrypoint" {
 }
 ```
 
-<Render file="add-new-rule" params={{ one: "rate limiting rule" }} /> <br />
+</Details>
 
 ## Create an advanced rate limiting rule
 

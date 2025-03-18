@@ -15,10 +15,6 @@
             "value": "false"
         },
         {
-            "property_id": "context_window",
-            "value": "4096"
-        },
-        {
             "property_id": "info",
             "value": "https://ai.meta.com/llama/"
         },

@@ -2,7 +2,7 @@
 title: Compression Rules
 pcx_content_type: concept
 sidebar:
-  order: 11
+  order: 9
 ---
 
 import { FeatureTable, Render } from "~/components";
@@ -15,7 +15,7 @@ When there is a match for a compression rule configured with several compression
 
 <Render
 	file="rules-requirements"
-	params={{ sentenceIntro: "Compression Rules require" }}
+	params={{ one: "Compression Rules require" }}
 />
 
 ## Get started
@@ -31,9 +31,7 @@ Alternatively, follow the instructions in the following pages to get started:
 
 ## Availability
 
-Compression Rules are available in all Cloudflare plans.
-
-<Render file="rules-new-limits" />
+Compression Rules are available in all Cloudflare plans. Users in the Free plan will gradually get access throughout 2024.
 
 <FeatureTable id="rules.compression_rules" />
 
@@ -55,5 +53,5 @@ The following fields are commonly used in expressions of compression rules:
 
 <Render
 	file="troubleshoot-rules-with-trace"
-	params={{ rulesFeatureName: "compression rules" }}
+	params={{ one: "compression rules" }}
 />

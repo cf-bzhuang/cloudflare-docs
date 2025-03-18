@@ -13,3 +13,7 @@ meta:
 
 resources:
   dashboard_link: https://dash.cloudflare.com/?to=/:account/notifications
+
+externals:
+  - title: Cloudflare homepage
+    url: https://cloudflare.com

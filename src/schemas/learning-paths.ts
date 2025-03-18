@@ -10,6 +10,5 @@ export const learningPathsSchema = z
 		products: z.string().array(),
 		product_group: z.string(),
 		additional_groups: z.string().array().optional(),
-		video: z.boolean().default(false),
 	})
 	.strict();

@@ -67,8 +67,9 @@ with HTTP policies applied"]
 <TabItem label="API">
 
 ```bash
-curl https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/access/apps/$APP_UUID/policies \
---header "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+curl https://api.cloudflare.com/client/v4/accounts/{account_id}/access/apps/{app_uuid}/policies \
+--header "X-Auth-Email: <EMAIL>" \
+--header "X-Auth-Key: <API_KEY>" \
 --header "Content-Type: application/json" \
 --data '{
   "decision": "allow",
@@ -113,8 +114,9 @@ To create a list of serial numbers, refer to [Create Zero Trust list](/api/resou
 <TabItem label="API">
 
 ```bash
-curl https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/access/apps/$APP_UUID/policies \
---header "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+curl https://api.cloudflare.com/client/v4/accounts/{account_id}/access/apps/{app_uuid}/policies \
+--header "X-Auth-Email: <EMAIL>" \
+--header "X-Auth-Key: <API_KEY>" \
 --header "Content-Type: application/json" \
 --data '{
   "decision": "allow",
@@ -162,8 +164,9 @@ Prevents users on unmanaged devices from downloading any files from your private
 <TabItem label="API">
 
 ```bash
-curl https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/gateway/rules \
---header "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+curl https://api.cloudflare.com/client/v4/accounts/{account_id}/gateway/rules \
+--header "X-Auth-Email: <EMAIL>" \
+--header "X-Auth-Key: <API_KEY>" \
 --header "Content-Type: application/json" \
 --data '{
   "name": "Disable file downloads in isolated browser",
@@ -247,8 +250,9 @@ Block users on unmanaged devices from downloading files that contain credit card
 <TabItem label="API">
 
 ```bash
-curl https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/gateway/rules \
---header "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+curl https://api.cloudflare.com/client/v4/accounts/{account_id}/gateway/rules \
+--header "X-Auth-Email: <EMAIL>" \
+--header "X-Auth-Key: <API_KEY>" \
 --header "Content-Type: application/json" \
 --data '{
   "name": "Block credit card numbers",

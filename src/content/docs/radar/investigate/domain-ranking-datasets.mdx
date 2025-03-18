@@ -24,35 +24,24 @@ curl "https://api.cloudflare.com/client/v4/radar/ranking/top?name=top&limit=5" \
 
 ```json
 {
-  "success": true,
-  "errors": [],
-  "result": {
-    "top_0": [
-			{
-				"rank": 1,
-				"domain": "google.com"
-			},
-			{
-				"rank": 2,
-				"domain": "googleapis.com"
-			},
-			{
-				"rank": 3,
-				"domain": "facebook.com"
-			},
-			{
-				"rank": 4,
-				"domain": "gstatic.com"
-			},
-			{
-				"rank": 5,
-				"domain": "apple.com"
-			}
-    ]
-  },
-	"meta": {
-		// ...
-	}
+  "rank": 1,
+  "domain": "google.com"
+},
+{
+  "rank": 2,
+  "domain": "googleapis.com"
+},
+{
+  "rank": 3,
+  "domain": "facebook.com"
+},
+{
+  "rank": 4,
+  "domain": "gstatic.com"
+},
+{
+  "rank": 5,
+  "domain": "apple.com"
 }
 ```
 
@@ -73,27 +62,23 @@ curl "https://api.cloudflare.com/client/v4/radar/datasets?limit=10&datasetType=R
 
 ```json
 {
-  "success": true,
-  "errors": [],
-  "result": {
-		"datasets": [
-			{
-				"id": 213,
-				"title": "Top 1000000 ranking domains",
-				"description": "Unordered top 1000000 from 2023-01-02 to 2023-01-09",
-				"type": "RANKING_BUCKET",
-				"tags": [
-					"GLOBAL",
-					"top_1000000"
-				],
-				"meta": {
-					"top": 1000000
-				},
-				"alias": "ranking_top_1000000"
-			},
-			// ...
-		]
-	}
+  "datasets": [
+    {
+      "id": 213,
+      "title": "Top 1000000 ranking domains",
+      "description": "Unordered top 1000000 from 2023-01-02 to 2023-01-09",
+      "type": "RANKING_BUCKET",
+      "tags": [
+        "GLOBAL",
+        "top_1000000"
+      ],
+      "meta": {
+        "top": 1000000
+      },
+      "alias": "ranking_top_1000000"
+    },
+    ...
+  ]
 }
 ```
 
@@ -112,13 +97,9 @@ curl "https://api.cloudflare.com/client/v4/radar/datasets/download" \
 
 ```json
 {
-  "success": true,
-  "errors": [],
-  "result": {
-		"dataset": {
-			"url": "https://example.com/download"
-		}
-	}
+  "dataset": {
+    "url": "https://example.com/download"
+  }
 }
 ```
 

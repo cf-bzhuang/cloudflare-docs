@@ -13,7 +13,7 @@ Function calling enables people to take Large Language Models (LLMs) and use the
 
 In essence, function calling allows you to perform actions with LLMs by executing code or making additional API calls.
 
-<Stream id="603e94c9803b4779dd612493c0dd7125" title="placeholder" />
+<Stream videoId="603e94c9803b4779dd612493c0dd7125" videoTitle="placeholder" />
 
 ## How can I use function calling?
 
@@ -84,7 +84,7 @@ export default {
 		const response = await env.AI.run(
 			"@hf/nousresearch/hermes-2-pro-mistral-7b",
 			{
-				messages: [{ role: "user", content: "Who is Cloudflare on GitHub?" }],
+				messages: [{ role: "user", content: "Who is Cloudflare on github?" }],
 				tools: [
 					{
 						name: "getGithubUser",
@@ -130,14 +130,16 @@ export default {
 				messages: [
 					{
 						role: "user",
-						content: "Who is Cloudflare on GitHub?",
+						content: "Who is Cloudflare on github?",
 					},
 					{
 						role: "assistant",
-						content: JSON.stringify(selected_tool),
+						content: "",
+						tool_call: selected_tool.name,
 					},
 					{
 						role: "tool",
+						name: selected_tool.name,
 						content: JSON.stringify(res),
 					},
 				],

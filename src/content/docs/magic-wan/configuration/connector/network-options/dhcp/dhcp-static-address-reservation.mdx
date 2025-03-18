@@ -3,7 +3,7 @@ pcx_content_type: how-to
 title: DHCP static address reservation
 ---
 
-import { APIRequest, Render, TabItem, Tabs } from "~/components";
+import { Render, TabItem, Tabs } from "~/components";
 
 If you configure your Connector to be a DHCP server, you can also assign IP addresses to specific devices on your network. To reserve IP addresses:
 
@@ -23,11 +23,14 @@ Create a [`PUT` request](/api/resources/magic_transit/subresources/sites/subreso
 
 Example:
 
-<APIRequest
-  path="/accounts/{account_id}/magic/sites/{site_id}/lans/{lan_id}"
-  method="PUT"
-  json={{
-    "lan": {
+```bash
+curl --request PUT \
+https://api.cloudflare.com/client/v4/accounts/{account_id}/magic/sites/{site_id}/lans/{lan_id} \
+--header "X-Auth-Email: <EMAIL>" \
+--header "X-Auth-Key: <API_KEY>" \
+--header "Content-Type: application/json" \
+--data '{
+  "lan": {
     "static_addressing": {
       "dhcp_server": {
         "reservations": {
@@ -37,7 +40,7 @@ Example:
       }
     }
   }
-  }}
-/>
+}'
+```
 
 </TabItem> </Tabs>

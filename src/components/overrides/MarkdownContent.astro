@@ -1,7 +1,10 @@
 ---
-import "@astrojs/starlight/style/markdown.css";
+import type { Props } from "@astrojs/starlight/props";
+import '@astrojs/starlight/style/markdown.css';
+
 import ImageZoom from "starlight-image-zoom/components/ImageZoom.astro";
 
+import { FeedbackPrompt } from "~/components";
 /*
     MIT License
 
@@ -25,14 +28,50 @@ import ImageZoom from "starlight-image-zoom/components/ImageZoom.astro";
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 */
+const { tableOfContents } = Astro.props.entry.data;
 ---
+
+{
+	tableOfContents === false &&
+		<style>
+			:root {
+				--sl-content-width: 60rem;
+			}
+		</style>
+}
 
 <ImageZoom />
 <div class="sl-markdown-content">
-	<slot />
+    <slot />
+	<div class="feedback-prompt-content">
+		<FeedbackPrompt />
+	</div>
 </div>
-
 <style>
+	html {
+		.feedback-prompt-content {
+			margin-top: 1.5em !important;
+
+			@media (min-width: 1152px) {
+				& {
+					display: none;
+				}
+			}
+		}
+
+		&:not([data-has-toc]) {
+			.feedback-prompt-content {
+				display: block;
+			}
+		}
+
+		&[data-has-hero] {
+			.feedback-prompt-content {
+				display: none;
+			}
+		}
+	}
+
 	/* Custom styles for heading anchor links. */
 	.sl-markdown-content :global(.heading-wrapper) {
 		--icon-size: 0.75em;
@@ -42,9 +81,7 @@ import ImageZoom from "starlight-image-zoom/components/ImageZoom.astro";
 
 	/* Headings after non-headings have more spacing. */
 	.sl-markdown-content
-		:global(
-			:not(.heading-wrapper) + :is(.heading-wrapper):not(:where(.not-content *))
-		) {
+		:global(:not(.heading-wrapper) + :is(.heading-wrapper):not(:where(.not-content *))) {
 		margin-top: 1.5em;
 	}
 
